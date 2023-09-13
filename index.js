@@ -1,6 +1,7 @@
 import { words } from "./data/words.js";
 
 let selectedWord = ""
+let actualWord = ""
 let remaniningLives = 0
 const PRESSEDKEYS = []
 const KEYS = [
@@ -30,6 +31,7 @@ function renderForcaGame() {
 
     drawForca()
     selectedWord = word
+    actualWord = "-".repeat(selectedWord.length)
 }
 
 function drawForca() {
@@ -153,10 +155,6 @@ function updateForca() {
             ctx.fill();
             break
     }
-
-    if (isGameOver()) {
-        handleGameOver()
-    }
 }
 
 function handleIncorrectKey() {
@@ -188,6 +186,12 @@ function updateForcaWord(key) {
         let letterEl = document.querySelector(`#letter-${ind + 1}`)
         letterEl.textContent = selectedWord[ind]
     }
+    if (isGameOver()) {
+        handleGameOver()
+    }
+    else if(isGameDefeated()){
+        handleGameDefeated()
+    }
 }
 
 function searchForKeyOnForcaWord(key) {
@@ -200,6 +204,7 @@ function searchForKeyOnForcaWord(key) {
             break
         }
         list.push(keyFirstOccurrence)
+        actualWord = actualWord.substring(0, keyFirstOccurrence) + key + actualWord.substring(keyFirstOccurrence + 1)
         x = keyFirstOccurrence + 1
     }
     return list
@@ -215,14 +220,21 @@ function isGameOver() {
     return remaniningLives === 0 ? true : false
 }
 
+function isGameDefeated(){
+    return actualWord === selectedWord ? true : false
+}
+
 function handleKeyPressed(key) {
+   
+    const upperCaseKey = key.toUpperCase()
+    let behavior = verifyKeyPressed(upperCaseKey)
+    handleButtonBehavior(upperCaseKey, behavior)
+
     if (isGameOver()) {
         handleGameOver()
     }
-    else {
-        const upperCaseKey = key.toUpperCase()
-        let behavior = verifyKeyPressed(upperCaseKey)
-        handleButtonBehavior(upperCaseKey, behavior)
+    else if (isGameOver()) {
+        handleGameOver()
     }
 }
 
@@ -238,6 +250,11 @@ function disableKeyboard() {
 
 function handleGameOver() {
     window.alert("Game Over")
+    disableKeyboard()
+}
+
+function handleGameDefeated(){
+    window.alert("Você venceu! Parabéns.")
     disableKeyboard()
 }
 
