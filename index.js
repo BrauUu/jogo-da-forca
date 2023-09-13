@@ -109,7 +109,7 @@ function updateForca() {
     const canvas = document.querySelector("#forca")
     const ctx = canvas.getContext("2d")
     switch (remaniningLives) {
-        case 5: 
+        case 5:
             ctx.beginPath()
             ctx.arc(105, 87, 10, 0, 2 * Math.PI)
             ctx.fill();
@@ -186,12 +186,6 @@ function updateForcaWord(key) {
         let letterEl = document.querySelector(`#letter-${ind + 1}`)
         letterEl.textContent = selectedWord[ind]
     }
-    if (isGameOver()) {
-        handleGameOver()
-    }
-    else if(isGameDefeated()){
-        handleGameDefeated()
-    }
 }
 
 function searchForKeyOnForcaWord(key) {
@@ -220,22 +214,25 @@ function isGameOver() {
     return remaniningLives === 0 ? true : false
 }
 
-function isGameDefeated(){
+function isGameDefeated() {
     return actualWord === selectedWord ? true : false
 }
 
 function handleKeyPressed(key) {
-   
-    const upperCaseKey = key.toUpperCase()
-    let behavior = verifyKeyPressed(upperCaseKey)
-    handleButtonBehavior(upperCaseKey, behavior)
 
-    if (isGameOver()) {
-        handleGameOver()
+    
+    if(!isGameOver() && !isGameDefeated()) {
+        const upperCaseKey = key.toUpperCase()
+        let behavior = verifyKeyPressed(upperCaseKey)
+        handleButtonBehavior(upperCaseKey, behavior)
+        if (isGameOver()) {
+            handleGameOver()
+        }
+        else if (isGameDefeated()) {
+            handleGameDefeated()
+        }
     }
-    else if (isGameOver()) {
-        handleGameOver()
-    }
+
 }
 
 function disableKeyboard() {
@@ -253,7 +250,7 @@ function handleGameOver() {
     disableKeyboard()
 }
 
-function handleGameDefeated(){
+function handleGameDefeated() {
     window.alert("Você venceu! Parabéns.")
     disableKeyboard()
 }
