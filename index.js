@@ -2,12 +2,15 @@ import { words } from "./data/words.js";
 
 let selectedWord = ""
 let actualWord = ""
-let remaniningLives = 0
+let remaniningLives = 6
 const PRESSEDKEYS = []
 const KEYS = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
     ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
+]
+const VALIDKEYS = [
+    'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'
 ]
 
 
@@ -34,9 +37,17 @@ function renderForcaGame() {
     actualWord = "-".repeat(selectedWord.length)
 }
 
+function removeWordElement(){
+    const wordEl = document.querySelector("#word")
+    while(wordEl.hasChildNodes()) {
+        wordEl.removeChild(wordEl.firstChild)
+    }
+}
+
 function drawForca() {
     const canvas = document.querySelector("#forca")
     const ctx = canvas.getContext("2d")
+    ctx.clearRect(0,0, canvas.width, canvas.height)
 
     ctx.beginPath()
     ctx.moveTo(10, 190)
@@ -104,8 +115,15 @@ function renderKeyboard() {
 
 }
 
+function removeKeyboard(){
+    const keyboardEl = document.querySelector(".keyboard")
+    while(keyboardEl.hasChildNodes()) {
+        keyboardEl.removeChild(keyboardEl.firstChild)
+    }
+}
+
 function updateForca() {
-    console.info(`Você tem ${remaniningLives} vidas`)
+    console.info(`Você tem ${remaniningLives} vida(s) restantes`)
     const canvas = document.querySelector("#forca")
     const ctx = canvas.getContext("2d")
     switch (remaniningLives) {
@@ -163,7 +181,7 @@ function handleIncorrectKey() {
 }
 
 function verifyKeyPressed(key) {
-    if (PRESSEDKEYS.indexOf(key) == -1) {
+    if (PRESSEDKEYS.indexOf(key) == -1 && VALIDKEYS.indexOf(key) != -1) {
         PRESSEDKEYS.push(key)
         if (selectedWord.includes(key)) {
             console.info(`A palavra contém a letra ${key}.`)
@@ -220,8 +238,8 @@ function isGameDefeated() {
 
 function handleKeyPressed(key) {
 
-    
-    if(!isGameOver() && !isGameDefeated()) {
+
+    if (!isGameOver() && !isGameDefeated()) {
         const upperCaseKey = key.toUpperCase()
         let behavior = verifyKeyPressed(upperCaseKey)
         handleButtonBehavior(upperCaseKey, behavior)
@@ -246,19 +264,33 @@ function disableKeyboard() {
 }
 
 function handleGameOver() {
-    window.alert("Game Over")
     disableKeyboard()
+    setTimeout(() => {
+        window.alert(`Você perdeu! A resposta era '${selectedWord}'.`)
+        reRenderGame()
+    }, 500)
 }
 
 function handleGameDefeated() {
-    window.alert("Você venceu! Parabéns.")
     disableKeyboard()
+    setTimeout(() => {
+        window.alert("Você venceu! Parabéns.")
+        reRenderGame()
+    }, 500)
+}
+
+function reRenderGame() {
+    removeWordElement()
+    renderForcaGame()
+    removeKeyboard()
+    renderKeyboard()
+    remaniningLives = 6
+    PRESSEDKEYS.length = 0
 }
 
 window.addEventListener("load", () => {
     renderForcaGame()
     renderKeyboard()
-    remaniningLives = 6
 })
 
 window.addEventListener("keypress", (event) => {

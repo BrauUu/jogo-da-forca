@@ -1,14 +1,26 @@
 export const words = [
     {
-        "category": "FRUTAS",
+        "category": "FRUTA",
         "word" : "MORANGO"
     },
     {
-        "category" : "FRUTAS",
+        "category" : "FRUTA",
         "word" : "LARANJA"
     },
     {
-        "category" : "FRUTAS",
+        "category" : "FRUTA",
+        "word" : "MELANCIA"
+    },
+    {
+        "category" : "FRUTA",
+        "word" : "MARACUJA"
+    },
+    {
+        "category" : "FRUTA",
+        "word" : "PITAYA"
+    },
+    {
+        "category" : "FRUTA",
         "word" : "UVA"
     },
     {
@@ -21,6 +33,46 @@ export const words = [
     },
     {
         "category" : "ANIMAL",
+        "word" : "COELHO"
+    },
+    {
+        "category" : "ANIMAL",
+        "word" : "ELEFANTE"
+    },
+    {
+        "category" : "ANIMAL",
+        "word" : "TOURO"
+    },
+    {
+        "category" : "ANIMAL",
+        "word" : "CAMALEAO"
+    },
+    {
+        "category" : "ANIMAL",
         "word" : "URUBU"
+    },
+    {
+        "category" : "PAIS",
+        "word" : "INGLATERRA"
+    },
+    {
+        "category" : "PAIS",
+        "word" : "HOLANDA"
+    },
+    {
+        "category" : "PAIS",
+        "word" : "CHILE"
+    },
+    {
+        "category" : "PAIS",
+        "word" : "ZIMBABUE"
+    },
+    {
+        "category" : "PAIS",
+        "word" : "HONDURAS"
+    },
+    {
+        "category" : "PAIS",
+        "word" : "GRECIA"
     }
 ]
