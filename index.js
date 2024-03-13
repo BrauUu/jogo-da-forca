@@ -3,6 +3,7 @@ import { words } from "./data/words.js";
 let selectedWord = ""
 let actualWord = ""
 let remaniningLives = 6
+
 const PRESSEDKEYS = []
 const KEYS = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -10,9 +11,20 @@ const KEYS = [
     ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
 ]
 const VALIDKEYS = [
-    'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'W', 'Z'
 ]
 
+window.addEventListener("load", () => {
+    renderForcaGame()
+    renderKeyboard()
+})
+
+window.addEventListener("keypress", (event) => {
+    handleKeyPressed(event.key)
+})
+
+const canvas = document.querySelector("#forca")
+const ctx = canvas.getContext("2d")
 
 function renderForcaGame() {
     const min = 0
@@ -45,9 +57,9 @@ function removeWordElement(){
 }
 
 function drawForca() {
-    const canvas = document.querySelector("#forca")
-    const ctx = canvas.getContext("2d")
     ctx.clearRect(0,0, canvas.width, canvas.height)
+    ctx.fillStyle = "#000"
+    ctx.lineCap = "round";
 
     ctx.beginPath()
     ctx.moveTo(10, 190)
@@ -64,6 +76,7 @@ function drawForca() {
     ctx.lineTo(10, 180)
     ctx.quadraticCurveTo(0, 185, 10, 190)
     ctx.fill()
+    ctx.closePath()
 
     ctx.beginPath()
     ctx.moveTo(30, 70)
@@ -71,6 +84,7 @@ function drawForca() {
     ctx.lineTo(60, 50)
     ctx.lineTo(30, 80)
     ctx.fill()
+    ctx.closePath()
 
     ctx.beginPath()
     ctx.moveTo(100, 50)
@@ -78,10 +92,11 @@ function drawForca() {
     ctx.lineTo(110, 70)
     ctx.lineTo(110, 50)
     ctx.fill()
+    ctx.closePath()
 
     ctx.beginPath();
-    ctx.ellipse(105, 85, 10, 13, 0, 0, 2 * Math.PI)
     ctx.lineWidth = 6
+    ctx.ellipse(105, 85, 10, 13, 0, 0, 2 * Math.PI)
     ctx.stroke();
     ctx.closePath()
 
@@ -124,13 +139,14 @@ function removeKeyboard(){
 
 function updateForca() {
     console.info(`Você tem ${remaniningLives} vida(s) restantes`)
-    const canvas = document.querySelector("#forca")
-    const ctx = canvas.getContext("2d")
+    ctx.fillStyle = "#3F3F3F"
+    ctx.lineCap = "round";
     switch (remaniningLives) {
         case 5:
             ctx.beginPath()
             ctx.arc(105, 87, 10, 0, 2 * Math.PI)
             ctx.fill();
+            ctx.closePath()
             break
         case 4:
             ctx.beginPath()
@@ -139,6 +155,7 @@ function updateForca() {
             ctx.quadraticCurveTo(105, 138, 108, 135)
             ctx.lineTo(108, 87)
             ctx.fill();
+            ctx.closePath()
             break
         case 3:
             ctx.beginPath()
@@ -147,6 +164,7 @@ function updateForca() {
             ctx.lineTo(80, 102)
             ctx.quadraticCurveTo(78, 100, 82, 96)
             ctx.fill();
+            ctx.closePath()
             break
         case 2:
             ctx.beginPath()
@@ -155,6 +173,7 @@ function updateForca() {
             ctx.lineTo(128, 102)
             ctx.quadraticCurveTo(132, 100, 130, 96)
             ctx.fill();
+            ctx.closePath()
             break
         case 1:
             ctx.beginPath()
@@ -163,6 +182,7 @@ function updateForca() {
             ctx.quadraticCurveTo(93, 164, 96, 160)
             ctx.lineTo(108, 133)
             ctx.fill();
+            ctx.closePath()
             break
         case 0:
             ctx.beginPath()
@@ -171,6 +191,7 @@ function updateForca() {
             ctx.quadraticCurveTo(117, 164, 120, 160)
             ctx.lineTo(108, 133)
             ctx.fill();
+            ctx.closePath()
             break
     }
 }
@@ -238,7 +259,6 @@ function isGameDefeated() {
 
 function handleKeyPressed(key) {
 
-
     if (!isGameOver() && !isGameDefeated()) {
         const upperCaseKey = key.toUpperCase()
         let behavior = verifyKeyPressed(upperCaseKey)
@@ -260,7 +280,6 @@ function disableKeyboard() {
             key.setAttribute('disabled', 'disabled')
         }
     }
-
 }
 
 function handleGameOver() {
@@ -287,12 +306,3 @@ function reRenderGame() {
     remaniningLives = 6
     PRESSEDKEYS.length = 0
 }
-
-window.addEventListener("load", () => {
-    renderForcaGame()
-    renderKeyboard()
-})
-
-window.addEventListener("keypress", (event) => {
-    handleKeyPressed(event.key)
-})
